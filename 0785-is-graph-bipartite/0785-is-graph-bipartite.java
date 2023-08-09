@@ -9,10 +9,11 @@ class Solution {
     
     public boolean isBipartite(int[][] graph) {     
         int n = graph.length, m = graph[0].length;
-        boolean[] visited = new boolean[n];
+        int[] visited = new int[n];
+        Arrays.fill(visited,-1);
         
         for(int i=0;i<n;i++){
-            if(visited[i] == false){
+            if(visited[i] == -1){
                 boolean isBipartite = bfs(i,graph,visited);
                     
                 if(isBipartite == false) return false;
@@ -22,35 +23,20 @@ class Solution {
         return true;
     }
     
-    private boolean bfs(int src,int[][] graph, boolean[] visited){
-        HashSet<Integer> even = new HashSet<>();
-        HashSet<Integer> odd = new HashSet<>();
-        
+    private boolean bfs(int src,int[][] graph, int[] visited){
+       
         Queue<Node> q = new ArrayDeque<>();
         q.add(new Node(src,0));
         
         while(q.size() > 0){
             Node node = q.remove();
             
-            visited[node.vertex] = true;
+            if(visited[node.vertex] != -1 && visited[node.vertex]%2 != node.level%2) return false;
             
-            if(node.level == 0){
-                if(odd.contains(node.vertex)) return false;
-                even.add(node.vertex);
-                for(int i=0;i<graph[node.vertex].length;i++){
-                    if(visited[graph[node.vertex][i]] == false){
-                        q.add(new Node(graph[node.vertex][i],1));
-                    }
-                }
-            }
-            
-            if(node.level == 1){
-                if(even.contains(node.vertex)) return false;
-                odd.add(node.vertex);
-                for(int i=0;i<graph[node.vertex].length;i++){
-                    if(visited[graph[node.vertex][i]] == false){
-                        q.add(new Node(graph[node.vertex][i],0));
-                    }
+            visited[node.vertex] = node.level;
+            for(int i=0;i<graph[node.vertex].length;i++){
+                if(visited[graph[node.vertex][i]] == -1){
+                    q.add(new Node(graph[node.vertex][i],node.level+1));
                 }
             }
         }
