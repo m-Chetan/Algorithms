@@ -1,20 +1,34 @@
 class Solution {
     public String removeStars(String s) {
-        Stack<Character> stk = new Stack<>();
+        //without stack Two pointer
+        StringBuilder sb = new StringBuilder("");
         
-        for(char ch: s.toCharArray()){
+        for(int i=0;i<s.length();i++){
+            char ch = s.charAt(i);
             if(ch == '*'){
-                stk.pop();
+                sb.deleteCharAt(sb.length()-1);
             }
-            else stk.push(ch);
+            else sb.append(ch);
         }
         
-        String res = "";
+        return sb.toString();
         
-        while(stk.size()>0){
-            res = stk.pop() + res;
-        }
         
-        return res;
+//         Stack<Character> stk = new Stack<>();
+        
+//         for(char ch: s.toCharArray()){
+//             if(ch == '*'){
+//                 stk.pop();
+//             }
+//             else stk.push(ch);
+//         }
+        
+//         String res = "";
+        
+//         while(stk.size()>0){
+//             res = stk.pop() + res;
+//         }
+        
+//         return res;
     }
 }
