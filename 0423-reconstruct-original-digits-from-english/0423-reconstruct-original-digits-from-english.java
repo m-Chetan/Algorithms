@@ -4,15 +4,15 @@ class Solution {
         for (int i = 0; i < s.length(); i++){
             char c = s.charAt(i);
             if (c == 'z') count[0]++;
-            if (c == 'w') count[2]++;
-            if (c == 'x') count[6]++;
-            if (c == 's') count[7]++; //7-6
-            if (c == 'g') count[8]++;
-            if (c == 'u') count[4]++; 
-            if (c == 'f') count[5]++; //5-4
-            if (c == 'h') count[3]++; //3-8
-            if (c == 'i') count[9]++; //9-8-5-6
-            if (c == 'o') count[1]++; //1-0-2-4
+            else if (c == 'w') count[2]++;
+            else if (c == 'x') count[6]++;
+            else if (c == 's') count[7]++; //7-6
+            else if (c == 'g') count[8]++;
+            else if (c == 'u') count[4]++; 
+            else if (c == 'f') count[5]++; //5-4
+            else if (c == 'h') count[3]++; //3-8
+            else if (c == 'i') count[9]++; //9-8-5-6
+            else if (c == 'o') count[1]++; //1-0-2-4
         }
         count[7] -= count[6];
         count[5] -= count[4];
