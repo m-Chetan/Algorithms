@@ -1,16 +1,14 @@
 class MyHashMap {
     LinkedList<Node>[] buckets;
-    int capacity;
+    int size = 0;
     
     public MyHashMap() {
-        capacity = 4;
-        buckets = new LinkedList[4];
+        initBuckets(4);
     }
     
     public void put(int key, int value) {
 
         int bucketId = getBucket(key);
-        if(buckets[bucketId] == null) buckets[bucketId] = new LinkedList<>();
         
         for(Node node: buckets[bucketId]){
             if(node.key == key){
@@ -20,12 +18,16 @@ class MyHashMap {
         }
  
         buckets[bucketId].addLast(new Node(key,value));
+        size++;
+        
+        double lambda = (size*1.0)/buckets.length;
+        if(lambda>2){
+            rehash();
+        }
     }
     
     public int get(int key) {
         int bucketId = getBucket(key);
-        if(buckets[bucketId] == null) return -1;
-        
         for(Node node: buckets[bucketId]){
             if(node.key == key){
                 return node.val;
@@ -37,10 +39,10 @@ class MyHashMap {
     
     public void remove(int key) {
         int bucketId = getBucket(key);
-        if(buckets[bucketId] == null) return;
         for(Node node: buckets[bucketId]){
             if(node.key == key){
                 buckets[bucketId].remove(node);
+                size--;
                 return;
             }
         }
@@ -48,7 +50,26 @@ class MyHashMap {
     }
     
     private int getBucket(int key){
-        return this.hashCode()%capacity;
+        return Integer.hashCode(key)%buckets.length;
+    }
+    
+    private void rehash(){
+        LinkedList<Node>[] oldBucket = buckets;
+        
+        initBuckets(oldBucket.length*2);
+        
+        for(int i=0;i<oldBucket.length;i++){
+           for(Node node:oldBucket[i]){
+               put(node.key,node.val);
+           } 
+        }
+    }
+    
+    private void initBuckets(int N){
+        buckets = new LinkedList[N];
+        for(int i=0;i<N;i++){
+            buckets[i] = new LinkedList<>();
+        }
     }
 }
 
