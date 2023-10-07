@@ -4,14 +4,20 @@ class Solution {
          int n = m;
          
         for(int i=m-2;i>=0;i--){
+            PriorityQueue<Node> pq = new PriorityQueue<>((a,b)->a.val - b.val);
+            
+            for(int j=0;j<n;j++) pq.add(new Node(i+1,j,matrix[i+1][j]));
+            
             for(int j=0;j<n;j++){
-                int min = Integer.MAX_VALUE;
-                for(int k=0;k<n;k++){
-                    if(k==j) continue;
-                    min = Math.min(min,matrix[i+1][k]);
+                Node min = pq.peek();
+                if(min.j==j){
+                    Node top = pq.remove();
+                    min = pq.peek();
+                    pq.add(top);
                 }
                 
-                matrix[i][j] += min;
+                matrix[i][j] += min.val;
+                
             }
         }
         
@@ -20,5 +26,15 @@ class Solution {
             ans=Math.min(ans,matrix[0][i]);
         }
         return ans;
+    }
+}
+
+class Node{
+    int i,j,val;
+    
+    public Node(int i, int j, int val){
+        this.i = i;
+        this.j = j;
+        this.val = val;
     }
 }
