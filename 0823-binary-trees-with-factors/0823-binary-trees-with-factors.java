@@ -28,31 +28,3 @@ class Solution {
         
     }
 }
-
-// public class Solution {
-//     private static final int MOD = 1000000007;
-
-//     public int numFactoredBinaryTrees(int[] arr) {
-//         Arrays.sort(arr);
-      
-//         Map<Integer, Integer> dp = new HashMap<>();
-//         for (int x : arr) dp.put(x, 1);
-        
-//         int result = 0;
-        
-//         for (int i : arr) {
-//             for (int j : arr) {
-//                 if (j > Math.sqrt(i)) break;
-//                 if (i % j == 0 && dp.containsKey(i / j)) {
-//                     long temp = (long) dp.get(j) * dp.get(i / j);
-//                     dp.put(i, (int) ((dp.get(i) + (i / j == j ? temp : temp * 2)) % MOD));
-//                 }
-//             }
-//             result = (result + dp.get(i)) % MOD;
-//         }
-        
-  
-//         return result;
-//     }
-// }
-
