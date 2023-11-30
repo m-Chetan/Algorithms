@@ -1,16 +1,24 @@
 class Solution {
     List<List<String>> ans;
+    Set<Integer> colSet;
+    Set<Integer> leftDiagonal;
+    Set<Integer> rightDiagonal;
+    
     public List<List<String>> solveNQueens(int n) {
         ans = new ArrayList<>();
+        colSet = new HashSet<>(); 
+        leftDiagonal = new HashSet<>();
+        rightDiagonal = new HashSet<>();
+        
         char[][] board = new char[n][n];
         for(int i=0;i<n;i++) Arrays.fill(board[i],'.');
            
-        solve(0,board);
+        solve(0,board, colSet, leftDiagonal, rightDiagonal);
          
         return ans;
     }
     
-    private void solve(int row, char[][] board){
+    private void solve(int row, char[][] board,Set<Integer> colSet,Set<Integer> leftDiagonal,Set<Integer> rightDiagonal){
     
         if(row == board.length){
             List<String> res = new ArrayList<>();
@@ -22,37 +30,20 @@ class Solution {
         }
         
         for(int col=0;col<board[0].length;col++){
-            if(isQueenSafe(row,col,board)){
+            if(!colSet.contains(col) && !leftDiagonal.contains(col-row) && !rightDiagonal.contains(row+col)){
+                colSet.add(col);
+                leftDiagonal.add(col-row);
+                rightDiagonal.add(row+col);
+                
                 board[row][col] = 'Q';
-                solve(row+1,board);
+                solve(row+1, board, colSet, leftDiagonal, rightDiagonal);
                 board[row][col] = '.';
+                
+                colSet.remove(col);
+                leftDiagonal.remove(col-row);
+                rightDiagonal.remove(row+col);
             }
         }
-    }
-    
-    private boolean isQueenSafe(int row, int col, char[][] board){
-        for(int i=0;i<row;i++){
-            if(board[i][col] == 'Q') return false;
-        }
-        
-        for(int i=0;i<col;i++){
-            if(board[row][i] == 'Q') return false;
-        }
-        
-        int i = row, j = col;
-        while(i >= 0 && j >= 0){
-            if(board[i][j] == 'Q') return false;
-
-            i--; j--;
-        }
-        
-        i=row; j=col;
-        while(i>=0 && j<board.length){
-            if(board[i][j]=='Q') return false;
-            i--; j++;
-        }
-        
-        return true;
     }
     
     
