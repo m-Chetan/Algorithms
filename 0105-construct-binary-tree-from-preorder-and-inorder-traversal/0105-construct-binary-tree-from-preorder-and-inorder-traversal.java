@@ -15,25 +15,25 @@
  */
 class Solution {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
-        HashMap<Integer,Integer> map = new HashMap<>();
-        for(int i=0;i<inorder.length;i++) map.put(inorder[i],i);
+        int n = preorder.length;
         
-        return constructTree(0,preorder.length-1,preorder,0,inorder.length-1,inorder,map);
+        HashMap<Integer,Integer> map = new HashMap<>();
+        for(int i=0;i<n;i++) map.put(inorder[i], i);
+        
+        return buildTreeHelper(0,n-1,0,n-1,preorder,map);
     }
     
-    private TreeNode constructTree(int preStart,int preEnd, int[] preorder, int inStart, int inEnd, int[] inorder, HashMap<Integer,Integer> map){
+    private TreeNode buildTreeHelper(int pl, int pr, int il, int ir, int[] preorder, HashMap<Integer,Integer> inorder){
         
-        if(preStart>preEnd || inStart>inEnd) return null;
+        if(pl>pr || il>ir) return null;
         
-        TreeNode node = new TreeNode(preorder[preStart]);
+        TreeNode node = new TreeNode(preorder[pl]);
         
-        int rootIdx = map.get(preorder[preStart]);
+        int plInorder = inorder.get(preorder[pl]);
         
-        node.left = constructTree(preStart+1,preStart+rootIdx-inStart,preorder,inStart,rootIdx-1,inorder,map);
+        node.left = buildTreeHelper(pl+1, pl+plInorder-il, il, plInorder-1, preorder,inorder);
+        node.right = buildTreeHelper(pl+plInorder-il+1, pr, plInorder+1, ir, preorder, inorder);
         
-        node.right = constructTree(preStart+rootIdx-inStart+1,preEnd,preorder,rootIdx+1,inEnd,inorder,map);
-            
         return node;
-        
     }
 }
